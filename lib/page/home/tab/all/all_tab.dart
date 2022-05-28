@@ -56,26 +56,33 @@ class AllState extends BaseState<AllTab, AllViewModel> {
             children: [
               SizedBox(height: 60.w),
               buildDate(),
-              SizedBox(height: 8.w),
-              buildStatistic(),
-              SizedBox(height: 16.w),
-              line(),
-              SizedBox(height: 16.w),
-              // TODO: Set Data
               StreamBuilder<List<TaskModel>?>(
                 stream: getVm().bsTask,
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    return Text("Some thing went Wrong");
+                    return const Text("Some thing went Wrong");
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text("Loading");
+                    return const Text("Loading");
                   }
 
                   List<TaskModel> data = snapshot.data!;
+                  int lengthCompleted = 0;
+                  for (int i = 0; i < data.length; i++) {
+                    if (data[i].completed ?? true) {
+                      lengthCompleted++;
+                    }
+                  }
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(height: 8.w),
+                      buildStatistic(
+                          data.length - lengthCompleted, lengthCompleted),
+                      SizedBox(height: 16.w),
+                      line(),
+                      SizedBox(height: 16.w),
                       for (int i = 0; i < data.length; i++)
                         TaskItem(
                           data[i],
@@ -104,9 +111,9 @@ class AllState extends BaseState<AllTab, AllViewModel> {
     );
   }
 
-  Widget buildStatistic() {
+  Widget buildStatistic(int incomplete, int completed) {
     return Text(
-      "5 incomplete, 5 completed",
+      "$incomplete incomplete, $completed completed",
       style: TextStyle(
         fontSize: 14.t,
         fontWeight: FontWeight.w600,
