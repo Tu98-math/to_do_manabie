@@ -19,4 +19,8 @@ class AllViewModel extends BaseViewModel {
   addTask(TaskModel task) {
     getTask.insertTask(task);
   }
+
+  updateTask(TaskModel task) {
+    getTask.updateTask(task);
+  }
 }

@@ -39,7 +39,7 @@ dependencies:
   flutter_svg: ^1.0.3
   flutter_riverpod: ^1.0.3
   shared_preferences: ^2.0.15
-  floor: ^1.2.0
+  floor: ^1.0.0
 
   fluttertoast: ^8.0.9
   equatable: ^2.0.3

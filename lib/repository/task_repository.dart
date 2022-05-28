@@ -23,4 +23,8 @@ class TaskRepository {
   void insertTask(TaskModel task) {
     taskDao!.insertTask(task);
   }
+
+  void updateTask(TaskModel task) {
+    taskDao!.updateTask(task);
+  }
 }

@@ -44,10 +44,6 @@ class AllState extends BaseState<AllTab, AllViewModel> {
     );
   }
 
-  String getDate() {
-    return "${AppStrings.month[DateTime.now().month]} ${DateTime.now().day}, ${DateTime.now().year}";
-  }
-
   Widget buildBody() {
     return SingleChildScrollView(
       child: Padding(
@@ -78,10 +74,13 @@ class AllState extends BaseState<AllTab, AllViewModel> {
                   }
 
                   List<TaskModel> data = snapshot.data!;
-
                   return Column(
                     children: [
-                      for (int i = 0; i < data.length; i++) TaskItem(data[i])
+                      for (int i = 0; i < data.length; i++)
+                        TaskItem(
+                          data[i],
+                          updateTask: getVm().updateTask,
+                        )
                     ],
                   );
                 },

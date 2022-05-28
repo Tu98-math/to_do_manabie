@@ -82,7 +82,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `TaskModel` (`id` TEXT, `des` TEXT, `completed` INTEGER, `time` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `TaskModel` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `des` TEXT, `completed` INTEGER, `time` INTEGER)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -151,7 +151,7 @@ class _$TaskDao extends TaskDao {
   Stream<List<TaskModel>> getAllTask() {
     return _queryAdapter.queryListStream('SELECT * FROM TaskModel',
         mapper: (Map<String, Object?> row) => TaskModel(
-            id: row['id'] as String?,
+            id: row['id'] as int,
             des: row['des'] as String?,
             completed: row['completed'] == null
                 ? null

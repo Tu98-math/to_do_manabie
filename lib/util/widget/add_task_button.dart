@@ -59,7 +59,6 @@ class AddTaskButton extends StatelessWidget {
           void doneClick() async {
             startRun();
             if (_formKey.currentState!.validate()) {
-              await Future.delayed(const Duration(seconds: 1));
               await onTap(
                 TaskModel(
                     des: taskController.text,
