@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:to_do_manabie/page/home/home_page.dart';
 
 import '/page/welcome/welcome_page.dart';
 import 'app_routes.dart';
@@ -26,10 +27,10 @@ class RouteGenerator {
       //   return page(child: WelcomePage.instance());
       case AppRoutes.WELCOME:
         return page(child: WelcomePage.instance());
-      // case AppRoutes.HOME:
-      //   return page(child: WelcomePage.instance());
+      case AppRoutes.HOME:
+        return page(child: HomePage.instance());
       default:
-        throw RouteException("Route not found");
+        throw const RouteException("Route not found");
     }
   }
 }
