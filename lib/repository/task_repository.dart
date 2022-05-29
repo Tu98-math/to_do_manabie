@@ -16,15 +16,15 @@ class TaskRepository {
     return taskDao!.getAllTask();
   }
 
-  void removeTask(TaskModel task) {
-    taskDao!.deleteTask(task);
+  Future<void> removeTask(TaskModel task) async {
+    await taskDao!.deleteTask(task);
   }
 
-  void insertTask(TaskModel task) {
-    taskDao!.insertTask(task);
+  Future<void> insertTask(TaskModel task) async {
+    await taskDao!.insertTask(task);
   }
 
-  void updateTask(TaskModel task) {
-    taskDao!.updateTask(task);
+  Future<void> updateTask(TaskModel task) async {
+    await taskDao!.updateTask(task);
   }
 }

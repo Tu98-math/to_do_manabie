@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import '/util/extension/extension.dart';
 
 import '/base/base_state.dart';
 import '/gen/assets.gen.dart';
 import '/routing/app_routes.dart';
-import '/util/dimens.dart';
 import 'welcome_provider.dart';
 import 'welcome_vm.dart';
 
@@ -33,7 +33,7 @@ class WelcomeState extends BaseState<WelcomePage, WelcomeViewModel> {
 
   void init() async {
     await Future.delayed(const Duration(seconds: 2));
-    Get.toNamed(AppRoutes.HOME);
+    Get.offAndToNamed(AppRoutes.HOME);
   }
 
   @override
@@ -47,9 +47,7 @@ class WelcomeState extends BaseState<WelcomePage, WelcomeViewModel> {
     return Container(
       color: Colors.white,
       width: screenWidth,
-      child: Center(
-        child: Assets.images.logo.image(),
-      ),
+      child: Assets.images.logo.image().center(),
     );
   }
 

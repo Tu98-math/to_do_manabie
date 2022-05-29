@@ -43,6 +43,7 @@ dependencies:
 
   fluttertoast: ^8.0.9
   equatable: ^2.0.3
+  flutter_slidable: ^0.6.0
 
 dev_dependencies:
   flutter_test:

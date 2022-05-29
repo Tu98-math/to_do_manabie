@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '/util/extension/extension.dart';
 
 import '/gen/app_colors.dart';
 import '/model/task_model.dart';
-import '/util/dimens.dart';
 import '/util/widget/done_button.dart';
 
 class AddTaskButton extends StatelessWidget {
@@ -29,7 +29,10 @@ class AddTaskButton extends StatelessWidget {
             center: Alignment.bottomRight,
           ),
         ),
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -38,26 +41,26 @@ class AddTaskButton extends StatelessWidget {
     final _formKey = GlobalKey<FormState>();
     TextEditingController taskController = TextEditingController();
 
-    bool onRunning = false;
+    Widget doneButton = Container(
+      decoration: BoxDecoration(
+        color: AppColors.neutral.dark,
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: AppColors.neutral.dark),
+      ),
+      child: 'Done'
+          .plain()
+          .color(Colors.white)
+          .fSize(12)
+          .weight(FontWeight.w700)
+          .b()
+          .pad(8, 30),
+    );
 
     return await showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(builder: (context, setState) {
-          void startRun() {
-            setState(() {
-              onRunning = true;
-            });
-          }
-
-          void endRun() {
-            setState(() {
-              onRunning = false;
-            });
-          }
-
           void doneClick() async {
-            startRun();
             if (_formKey.currentState!.validate()) {
               await onTap(
                 TaskModel(
@@ -67,19 +70,21 @@ class AddTaskButton extends StatelessWidget {
               );
               Get.back();
             }
-            endRun();
           }
 
           return AlertDialog(
-            contentPadding: EdgeInsets.all(16.w),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
             titlePadding: EdgeInsets.all(16.w),
-            title: Text(
-              "Add Task",
-              style: TextStyle(
-                fontSize: 18.t,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            title: "Create Task"
+                .plain()
+                .fSize(20)
+                .weight(FontWeight.w700)
+                .color(AppColors.neutral.dark)
+                .b(),
+            actionsPadding: EdgeInsets.only(bottom: 12.w, right: 12.w),
+            actions: [
+              doneButton.inkTap(onTap: doneClick),
+            ],
             content: SizedBox(
               width: screenWidth,
               child: Form(
@@ -95,11 +100,6 @@ class AddTaskButton extends StatelessWidget {
                       validator: (val) =>
                           val!.isNotEmpty ? null : "Please enter your task",
                       controller: taskController,
-                    ),
-                    SizedBox(height: 20.w),
-                    DoneButton(
-                      onTap: doneClick,
-                      enable: !onRunning,
                     ),
                   ],
                 ),

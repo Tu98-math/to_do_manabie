@@ -16,11 +16,36 @@ class AllViewModel extends BaseViewModel {
     });
   }
 
-  addTask(TaskModel task) {
-    getTask.insertTask(task);
+  addTask(TaskModel task) async {
+    if (bsRunning.value) {
+      showToast();
+    } else {
+      startRunning();
+      await getTask.insertTask(task);
+      endRunning();
+      showToast(text: "Created task");
+    }
   }
 
-  updateTask(TaskModel task) {
-    getTask.updateTask(task);
+  updateTask(TaskModel task) async {
+    if (bsRunning.value) {
+      showToast();
+    } else {
+      startRunning();
+      await getTask.updateTask(task);
+      showToast(text: "Tasks have been updated");
+      endRunning();
+    }
+  }
+
+  removeTask(TaskModel task) async {
+    if (bsRunning.value) {
+      showToast();
+    } else {
+      startRunning();
+      await getTask.removeTask(task);
+      endRunning();
+      showToast(text: "Task deleted");
+    }
   }
 }
