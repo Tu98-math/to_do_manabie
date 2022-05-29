@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import '/base/base_state.dart';
 import '/gen/app_colors.dart';
-import '/util/dimens.dart';
 import 'home_provider.dart';
 import 'home_vm.dart';
 import 'tab/all/all_tab.dart';
 import 'tab/complete/complete_tab.dart';
 import 'tab/incomplete/incomplete_tab.dart';
+import '/util/extension/extension.dart';
 
 class HomePage extends StatefulWidget {
   final WidgetRef watch;
@@ -116,31 +116,26 @@ class HomeState extends BaseState<HomePage, HomeViewModel> {
     required int index,
   }) {
     return BottomNavigationBarItem(
-      icon: Padding(
-        padding: const EdgeInsets.only(
-          top: 4,
-        ),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              color: currentTab != index
-                  ? AppColors.neutral.grey
-                  : AppColors.primary.blue,
-            ),
-            SizedBox(height: 4.w),
-            Text(
-              title,
-              style: TextStyle(
-                color: currentTab != index
+      icon: Column(
+        children: [
+          Icon(
+            icon,
+            color: currentTab != index
+                ? AppColors.neutral.grey
+                : AppColors.primary.blue,
+          ),
+          SizedBox(height: 4.w),
+          title
+              .plain()
+              .color(
+                currentTab != index
                     ? AppColors.neutral.grey
                     : AppColors.primary.blue,
-                fontSize: 12.t,
-              ),
-            )
-          ],
-        ),
-      ),
+              )
+              .fSize(12)
+              .b(),
+        ],
+      ).pad(4),
       label: title,
     );
   }

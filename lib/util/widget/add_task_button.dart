@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '/util/widget/action_button.dart';
 import '/util/extension/extension.dart';
 
 import '/gen/app_colors.dart';
 import '/model/task_model.dart';
-import '/util/widget/done_button.dart';
 
 class AddTaskButton extends StatelessWidget {
   const AddTaskButton({Key? key, required this.onTap}) : super(key: key);
@@ -41,21 +41,6 @@ class AddTaskButton extends StatelessWidget {
     final _formKey = GlobalKey<FormState>();
     TextEditingController taskController = TextEditingController();
 
-    Widget doneButton = Container(
-      decoration: BoxDecoration(
-        color: AppColors.neutral.dark,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: AppColors.neutral.dark),
-      ),
-      child: 'Done'
-          .plain()
-          .color(Colors.white)
-          .fSize(12)
-          .weight(FontWeight.w700)
-          .b()
-          .pad(8, 30),
-    );
-
     return await showDialog(
       context: context,
       builder: (context) {
@@ -83,7 +68,11 @@ class AddTaskButton extends StatelessWidget {
                 .b(),
             actionsPadding: EdgeInsets.only(bottom: 12.w, right: 12.w),
             actions: [
-              doneButton.inkTap(onTap: doneClick),
+              ActionButton(
+                'Done',
+                press: doneClick,
+                outline: false,
+              ),
             ],
             content: SizedBox(
               width: screenWidth,
