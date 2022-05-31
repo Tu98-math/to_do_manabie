@@ -1,14 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:to_do_manabie/model/task_model.dart';
 
 import '/base/base_state.dart';
 import '/gen/app_colors.dart';
+import '/model/task_model.dart';
+import '/util/extension/extension.dart';
 import 'home_provider.dart';
 import 'home_vm.dart';
 import 'tab/all/all_tab.dart';
 import 'tab/complete/complete_tab.dart';
 import 'tab/incomplete/incomplete_tab.dart';
-import '/util/extension/extension.dart';
 
 class HomePage extends StatefulWidget {
   final ScopedReader watch;
@@ -31,24 +33,36 @@ class HomeState extends BaseState<HomePage, HomeViewModel> {
   final PageController tabController = PageController();
   int currentTab = 0;
 
-  List<Widget> tab = [];
-
   int countComplete = 0, countIncomplete = 0;
+
+  late StreamSubscription<List<TaskModel>?> streamTask;
+
+  late StreamSubscription<bool> streamLoading;
+
+  List<Widget> tab = [];
 
   @override
   void initState() {
-    getVm().bsLoading.listen((value) {
-      if (!value) {
-        tab = [
-          AllTab.instance(),
-          CompleteTab.instance(() => tabClick(2)),
-          IncompleteTab.instance(),
-        ];
-        setState(() {});
-      }
-    });
+    tab = [
+      AllTab.instance(),
+      CompleteTab.instance(() => tabClick(2)),
+      IncompleteTab.instance(),
+    ];
 
-    getVm().bsTask.listen((value) {
+    // streamLoading = getVm().bsLoading.listen((value) {
+    //   if (!value) {
+    //     tab = [
+    //       AllTab.instance(),
+    //       CompleteTab.instance(() => tabClick(2)),
+    //       IncompleteTab.instance(),
+    //     ];
+    //   } else {
+    //     tab = [];
+    //   }
+    //   setState(() {});
+    // });
+
+    streamTask = getVm().bsTask.listen((value) {
       countComplete = 0;
       countIncomplete = 0;
       for (int i = 0; i < (value ?? []).length; i++) {
@@ -58,20 +72,27 @@ class HomeState extends BaseState<HomePage, HomeViewModel> {
           countIncomplete++;
         }
       }
-      if (countComplete + countIncomplete == 0) {
-        tab = [
-          AllTab.instance(),
-        ];
-      } else {
-        tab = [
-          AllTab.instance(),
-          CompleteTab.instance(() => tabClick(2)),
-          IncompleteTab.instance(),
-        ];
-      }
+      // if (countComplete + countIncomplete == 0) {
+      //   tab = [
+      //     AllTab.instance(),
+      //   ];
+      // } else {
+      //   tab = [
+      //     AllTab.instance(),
+      //     CompleteTab.instance(() => tabClick(2)),
+      //     IncompleteTab.instance(),
+      //   ];
+      // }
       setState(() {});
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    streamTask.cancel();
+    streamLoading.cancel();
+    super.dispose();
   }
 
   void goTab(int index) {
@@ -164,6 +185,7 @@ class HomeState extends BaseState<HomePage, HomeViewModel> {
             color: currentTab != index
                 ? AppColors.neutral.grey
                 : AppColors.primary.blue,
+            size: 18.h,
           ),
           SizedBox(height: 4.w),
           title
@@ -173,7 +195,7 @@ class HomeState extends BaseState<HomePage, HomeViewModel> {
                     ? AppColors.neutral.grey
                     : AppColors.primary.blue,
               )
-              .fSize(12)
+              .fSize(16)
               .b(),
         ],
       ).pad(4),

@@ -31,7 +31,7 @@ class IconChecked extends StatelessWidget {
               child: Icon(
                 Icons.check,
                 color: Colors.white,
-                size: 12.w,
+                size: 12.t,
               ),
             )
           : null,

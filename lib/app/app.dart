@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:to_do_manabie/page/welcome/welcome_page.dart';
 
 import '/gen/assets.gen.dart';
-import '/page/welcome/welcome_page.dart';
 import '/routing/route_generator.dart';
 
 class App extends StatelessWidget {

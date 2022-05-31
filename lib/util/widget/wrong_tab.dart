@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:restart_app/restart_app.dart';
-import '/util/extension/extension.dart';
 
 import '/gen/app_colors.dart';
 import '/gen/assets.gen.dart';
+import '/util/extension/extension.dart';
 
 class WrongTab extends StatelessWidget {
   const WrongTab(
@@ -40,9 +39,9 @@ class WrongTab extends StatelessWidget {
             .color(AppColors.neutral.grey)
             .center()
             .b(),
-        SizedBox(height: 30.w),
+        SizedBox(height: 30.h),
         buildTryAgainButton(),
-        SizedBox(height: 30.w),
+        SizedBox(height: 30.h),
       ],
     );
   }

@@ -4,13 +4,27 @@ import 'package:get/get.dart';
 import '/gen/app_colors.dart';
 import '/model/task_model.dart';
 import '/util/extension/extension.dart';
-import '/util/widget/action_button.dart';
 
-Future<void> showAddTaskDialog(
-    BuildContext context, Function(TaskModel) addTask) async {
+Future<void> showEditTaskDialog(
+    BuildContext context, TaskModel task, Function(TaskModel) press) async {
   final _formKey = GlobalKey<FormState>();
-
   TextEditingController controller = TextEditingController();
+  controller.text = task.des ?? '';
+
+  Widget doneButton = Container(
+    decoration: BoxDecoration(
+      color: AppColors.neutral.dark,
+      borderRadius: BorderRadius.circular(5),
+      border: Border.all(color: AppColors.neutral.dark),
+    ),
+    child: 'Done'
+        .plain()
+        .color(Colors.white)
+        .fSize(12)
+        .weight(FontWeight.w700)
+        .b()
+        .pad(8, 30),
+  );
 
   return await showDialog(
     context: context,
@@ -18,11 +32,12 @@ Future<void> showAddTaskDialog(
       return StatefulBuilder(builder: (context, setState) {
         void doneClick() async {
           if (_formKey.currentState!.validate()) {
-            await addTask(
+            press(
               TaskModel(
+                id: task.id,
                 des: controller.text,
                 completed: false,
-                time: DateTime.now().millisecondsSinceEpoch,
+                time: task.time,
               ),
             );
             Get.back();
@@ -32,7 +47,7 @@ Future<void> showAddTaskDialog(
         return AlertDialog(
           contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
           titlePadding: EdgeInsets.all(16.w),
-          title: "Create Task"
+          title: "Edit Task"
               .plain()
               .fSize(20)
               .weight(FontWeight.w700)
@@ -40,11 +55,7 @@ Future<void> showAddTaskDialog(
               .b(),
           actionsPadding: EdgeInsets.only(bottom: 12.w, right: 12.w),
           actions: [
-            ActionButton(
-              'Done',
-              press: doneClick,
-              outline: false,
-            ),
+            doneButton.inkTap(onTap: doneClick),
           ],
           content: SizedBox(
             width: screenWidth,
@@ -55,7 +66,6 @@ Future<void> showAddTaskDialog(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextFormField(
-                    style: TextStyle(fontSize: 14.w),
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: "Enter your task",

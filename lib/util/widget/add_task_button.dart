@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import '/util/widget/action_button.dart';
-import '/util/extension/extension.dart';
 
 import '/gen/app_colors.dart';
-import '/model/task_model.dart';
+import '/util/extension/extension.dart';
 
 class AddTaskButton extends StatelessWidget {
   const AddTaskButton({Key? key, required this.onTap}) : super(key: key);
@@ -14,8 +11,8 @@ class AddTaskButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 56.w,
-      height: 56.w,
+      width: 56.h,
+      height: 56.h,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: RadialGradient(
@@ -26,9 +23,10 @@ class AddTaskButton extends StatelessWidget {
           center: Alignment.bottomRight,
         ),
       ),
-      child: const Icon(
+      child: Icon(
         Icons.add,
         color: Colors.white,
+        size: 24.h,
       ),
     ).inkTap(
       onTap: onTap,

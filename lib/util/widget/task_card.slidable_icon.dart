@@ -24,7 +24,10 @@ class SlidableIcon extends StatelessWidget {
       child: Icon(
         icon,
         color: AppColors.primary.red,
+        size: 24.w,
       ).center(),
-    ).inkTap(onTap: press);
+    ).inkTap(
+      onTap: press,
+    );
   }
 }

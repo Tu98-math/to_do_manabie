@@ -1,13 +1,17 @@
-import '../../../../model/task_model.dart';
+import 'dart:async';
+
 import '/base/base_view_model.dart';
+import '../../../../model/task_model.dart';
 
 class IncompleteViewModel extends BaseViewModel {
   BehaviorSubject<List<TaskModel>?> bsTask =
       BehaviorSubject<List<TaskModel>?>();
 
+  late StreamSubscription<List<TaskModel>?> streamTask;
+
   @override
   void dispose() {
-    bsTask.close();
+    streamTask.cancel();
     super.dispose();
   }
 
@@ -16,12 +20,12 @@ class IncompleteViewModel extends BaseViewModel {
   }
 
   init() async {
-    getTask.getAllCompletedTask(false).listen((event) {
+    streamTask = getTask.getAllCompletedTask(false).listen((event) {
       bsTask.add(event);
     });
   }
 
-  addTask(TaskModel task) async {
+  Future<void> addTask(TaskModel task) async {
     if (bsRunning.value) {
       showToast();
     } else {
@@ -32,7 +36,7 @@ class IncompleteViewModel extends BaseViewModel {
     }
   }
 
-  updateTask(TaskModel task) async {
+  Future<void> updateTask(TaskModel task) async {
     if (bsRunning.value) {
       showToast();
     } else {
@@ -43,7 +47,7 @@ class IncompleteViewModel extends BaseViewModel {
     }
   }
 
-  removeTask(TaskModel task) async {
+  Future<void> removeTask(TaskModel task) async {
     if (bsRunning.value) {
       showToast();
     } else {
@@ -54,5 +58,3 @@ class IncompleteViewModel extends BaseViewModel {
     }
   }
 }
-
-enum InitialStatus { onBoarding, home, loading, error }

@@ -1,17 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:restart_app/restart_app.dart';
 
+import '/base/base_state.dart';
 import '/gen/assets.gen.dart';
 import '/model/task_model.dart';
 import '/util/dialog/add_task_dialog.dart';
+import '/util/dimens.dart';
+import '/util/extension/widget_extension.dart';
 import '/util/widget/default_tab.dart';
 import '/util/widget/task_card.dart';
 import '/util/widget/wrong_tab.dart';
-import '/base/base_state.dart';
-import '/util/dimens.dart';
 import 'incomplete_provider.dart';
 import 'incomplete_vm.dart';
-import '/util/extension/widget_extension.dart';
 
 class IncompleteTab extends StatefulWidget {
   final ScopedReader watch;
@@ -33,13 +35,21 @@ class IncompleteTab extends StatefulWidget {
 class IncompleteState extends BaseState<IncompleteTab, IncompleteViewModel> {
   int countIncomplete = 0;
 
+  late StreamSubscription<List<TaskModel>?> streamCount;
+
   @override
   void initState() {
     super.initState();
-    getVm().bsTask.listen((value) {
+    streamCount = getVm().bsTask.listen((value) {
       countIncomplete = (value ?? []).length;
       setState(() {});
     });
+  }
+
+  @override
+  void dispose() {
+    streamCount.cancel();
+    super.dispose();
   }
 
   @override

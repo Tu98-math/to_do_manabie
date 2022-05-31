@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '/util/extension/extension.dart';
+
 import '/gen/app_colors.dart';
+import '/util/extension/extension.dart';
 
 class ActionButton extends StatelessWidget {
   const ActionButton(this.text,
@@ -16,7 +17,7 @@ class ActionButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: outline! ? Colors.white : AppColors.neutral.dark,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(5.r),
         border: Border.all(color: AppColors.neutral.dark),
       ),
       child: text

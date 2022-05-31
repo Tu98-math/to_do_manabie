@@ -4,13 +4,12 @@ import 'package:to_do_manabie/model/task_model.dart';
 import '/database/database.dart';
 
 class TaskRepository {
-  TaskDao? taskDao;
+  static TaskDao? taskDao;
 
   Future<void> initDatabase() async {
     final database =
         await $FloorAppDatabase.databaseBuilder('app_database.db').build();
     taskDao = database.taskDao;
-    print("init successful");
   }
 
   Stream<List<TaskModel>?> getAllTask() {

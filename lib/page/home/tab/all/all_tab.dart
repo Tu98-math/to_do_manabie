@@ -1,18 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:restart_app/restart_app.dart';
-import '/gen/assets.gen.dart';
-import '/util/dialog/add_task_dialog.dart';
-
-import '/util/widget/default_tab.dart';
-import '/util/widget/wrong_tab.dart';
 
 import '/base/base_state.dart';
 import '/gen/app_colors.dart';
 import '/gen/app_strings.dart';
+import '/gen/assets.gen.dart';
 import '/model/task_model.dart';
+import '/util/dialog/add_task_dialog.dart';
 import '/util/extension/extension.dart';
 import '/util/widget/add_task_button.dart';
+import '/util/widget/default_tab.dart';
 import '/util/widget/task_card.dart';
+import '/util/widget/wrong_tab.dart';
 import 'all_provider.dart';
 import 'all_vm.dart';
 
@@ -36,9 +37,12 @@ class AllTab extends StatefulWidget {
 class AllState extends BaseState<AllTab, AllViewModel> {
   int countComplete = 0, countIncomplete = 0;
 
+  // ignore: prefer_typing_uninitialized_variables
+  late StreamSubscription<List<TaskModel>?> listenCount;
+
   @override
   void initState() {
-    getVm().bsTask.listen((value) {
+    listenCount = getVm().bsTask.listen((value) {
       countComplete = 0;
       countIncomplete = 0;
       for (int i = 0; i < (value ?? []).length; i++) {
@@ -51,6 +55,12 @@ class AllState extends BaseState<AllTab, AllViewModel> {
       setState(() {});
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    listenCount.cancel();
+    super.dispose();
   }
 
   @override
@@ -68,16 +78,16 @@ class AllState extends BaseState<AllTab, AllViewModel> {
   }
 
   Widget buildBody() {
-    return SingleChildScrollView(
-      child: Container(
-        color: Colors.white,
-        width: screenWidth,
+    return Container(
+      color: Colors.white,
+      width: screenWidth,
+      child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 60.w),
+            SizedBox(height: 60.h),
             buildDate().pad(0, 16),
-            SizedBox(height: 8.w),
+            SizedBox(height: 8.h),
             buildStatistic(
               countIncomplete,
               countComplete,
@@ -152,10 +162,13 @@ class AllState extends BaseState<AllTab, AllViewModel> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 for (int i = 0; i < data.length; i++)
-                  TaskCard(
-                    data[i],
-                    updateTask: getVm().updateTask,
-                    removeTask: getVm().removeTask,
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
+                    child: TaskCard(
+                      data[i],
+                      updateTask: getVm().updateTask,
+                      removeTask: getVm().removeTask,
+                    ),
                   )
               ],
             );
