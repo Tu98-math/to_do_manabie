@@ -89,7 +89,7 @@ class TaskCard extends StatelessWidget {
           ],
         ),
       ),
-    ).pad(8, 16);
+    ).pad(8.h, 16.w);
   }
 
   Widget buildIconChecked(bool checked) {
@@ -110,7 +110,7 @@ class TaskCard extends StatelessWidget {
 
   Widget buildLine(bool checked) => Container(
         width: 4.w,
-        height: 21.w,
+        height: 21.h,
         color: checked ? AppColors.primary.red : AppColors.primary.blue,
       ).pad(10, 0, 0);
 }

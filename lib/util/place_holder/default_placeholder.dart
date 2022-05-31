@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '/util/extension/widget_extension.dart';
 import 'default_shimmer.dart';

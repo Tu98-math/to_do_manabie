@@ -86,12 +86,12 @@ class AllState extends BaseState<AllTab, AllViewModel> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 60.h),
-            buildDate().pad(0, 16),
+            buildDate().pad(0, 16.w),
             SizedBox(height: 8.h),
             buildStatistic(
               countIncomplete,
               countComplete,
-            ).pad(0, 16),
+            ).pad(0, 16.w),
             line,
             buildListTask(),
           ],
@@ -124,7 +124,7 @@ class AllState extends BaseState<AllTab, AllViewModel> {
   Widget line = Container(
     height: 1.w,
     color: AppColors.neutral.light,
-  ).pad(16, 16);
+  ).pad(16.h, 16.w);
 
   Widget buildListTask() => SizedBox(
         width: screenWidth,

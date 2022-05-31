@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import '/base/base_view_model.dart';
-import '../../../../model/task_model.dart';
+import '/model/task_model.dart';
 
 class IncompleteViewModel extends BaseViewModel {
   BehaviorSubject<List<TaskModel>?> bsTask =
@@ -20,7 +20,7 @@ class IncompleteViewModel extends BaseViewModel {
   }
 
   init() async {
-    streamTask = getTask.getAllCompletedTask(false).listen((event) {
+    streamTask = taskRes.getAllCompletedTask(false).listen((event) {
       bsTask.add(event);
     });
   }
@@ -30,7 +30,7 @@ class IncompleteViewModel extends BaseViewModel {
       showToast();
     } else {
       startRunning();
-      await getTask.insertTask(task);
+      await taskRes.insertTask(task);
       endRunning();
       showToast(text: "Created task");
     }
@@ -41,7 +41,7 @@ class IncompleteViewModel extends BaseViewModel {
       showToast();
     } else {
       startRunning();
-      await getTask.updateTask(task);
+      await taskRes.updateTask(task);
       showToast(text: "Tasks have been updated");
       endRunning();
     }
@@ -52,7 +52,7 @@ class IncompleteViewModel extends BaseViewModel {
       showToast();
     } else {
       startRunning();
-      await getTask.removeTask(task);
+      await taskRes.removeTask(task);
       endRunning();
       showToast(text: "Task deleted");
     }

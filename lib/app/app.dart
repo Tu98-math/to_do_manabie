@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:to_do_manabie/page/welcome/welcome_page.dart';
 
 import '/gen/assets.gen.dart';
+import '/page/welcome/welcome_page.dart';
 import '/routing/route_generator.dart';
 
 class App extends StatelessWidget {
@@ -14,9 +14,11 @@ class App extends StatelessWidget {
       title: 'To Do Manabie',
       onGenerateRoute: RouteGenerator().onGenerateRoute,
       theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          fontFamily: Assets.font.poppinsRegular),
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: Assets.font.poppinsRegular,
+        scaffoldBackgroundColor: Colors.white,
+      ),
       home: WelcomePage.instance(),
       debugShowCheckedModeBanner: false,
     );

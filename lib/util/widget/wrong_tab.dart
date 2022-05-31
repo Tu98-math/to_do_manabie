@@ -30,7 +30,7 @@ class WrongTab extends StatelessWidget {
       children: [
         (image ?? Assets.images.wrong)
             .image(width: screenWidth, fit: BoxFit.fitWidth),
-        SizedBox(height: 50.w),
+        SizedBox(height: 50.h),
         (title ?? "Oh no!").plain().fSize(24).weight(FontWeight.w700).b(),
         (des ?? "Something went wrong,\nPlease try again.")
             .plain()
@@ -61,7 +61,7 @@ class WrongTab extends StatelessWidget {
             tileMode: TileMode.clamp,
           ),
         ),
-        child: (buttonText ?? "").plain().b().pad(14, 54),
+        child: (buttonText ?? "").plain().b().pad(14.h, 54.w),
       ).inkTap(
         onTap: onTap,
         borderRadius: BorderRadius.circular(100),

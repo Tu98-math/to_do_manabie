@@ -79,13 +79,13 @@ extension WidgetExtension on Widget {
     EdgeInsets mPad;
 
     if (d != null) {
-      mPad = EdgeInsets.only(left: a!.w, right: b!.w, top: c!.w, bottom: d.w);
+      mPad = EdgeInsets.only(left: a!, right: b!, top: c!, bottom: d);
     } else if (c != null) {
-      mPad = EdgeInsets.only(left: a!.w, right: b!.w, top: c.w);
+      mPad = EdgeInsets.only(left: a!, right: b!, top: c);
     } else if (b != null) {
-      mPad = EdgeInsets.symmetric(vertical: a!.w, horizontal: b.w);
+      mPad = EdgeInsets.symmetric(vertical: a!, horizontal: b);
     } else if (a != null) {
-      mPad = EdgeInsets.all(a.w);
+      mPad = EdgeInsets.all(a);
     } else {
       mPad = EdgeInsets.zero;
     }

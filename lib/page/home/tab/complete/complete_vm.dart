@@ -20,7 +20,7 @@ class CompleteViewModel extends BaseViewModel {
   }
 
   init() async {
-    streamTask = getTask.getAllCompletedTask(true).listen((event) {
+    streamTask = taskRes.getAllCompletedTask(true).listen((event) {
       bsTask.add(event);
     });
   }
@@ -30,7 +30,7 @@ class CompleteViewModel extends BaseViewModel {
       showToast();
     } else {
       startRunning();
-      await getTask.insertTask(task);
+      await taskRes.insertTask(task);
       endRunning();
       showToast(text: "Created task");
     }
@@ -41,7 +41,7 @@ class CompleteViewModel extends BaseViewModel {
       showToast();
     } else {
       startRunning();
-      await getTask.updateTask(task);
+      await taskRes.updateTask(task);
       showToast(text: "Tasks have been updated");
       endRunning();
     }
@@ -52,7 +52,7 @@ class CompleteViewModel extends BaseViewModel {
       showToast();
     } else {
       startRunning();
-      await getTask.removeTask(task);
+      await taskRes.removeTask(task);
       endRunning();
       showToast(text: "Task deleted");
     }

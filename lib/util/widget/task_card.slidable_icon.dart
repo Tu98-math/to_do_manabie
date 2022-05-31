@@ -17,14 +17,14 @@ class SlidableIcon extends StatelessWidget {
           BoxShadow(
             color: AppColors.neutral.light,
             offset: const Offset(5, 5),
-            blurRadius: 9,
+            blurRadius: 9.r,
           )
         ],
       ),
       child: Icon(
         icon,
         color: AppColors.primary.red,
-        size: 24.w,
+        size: 24.h,
       ).center(),
     ).inkTap(
       onTap: press,

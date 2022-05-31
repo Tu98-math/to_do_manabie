@@ -1,5 +1,6 @@
 import 'package:floor/floor.dart';
-import 'package:to_do_manabie/model/task_model.dart';
+
+import '/model/task_model.dart';
 
 @dao
 abstract class TaskDao {

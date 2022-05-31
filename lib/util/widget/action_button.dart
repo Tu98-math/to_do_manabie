@@ -23,10 +23,10 @@ class ActionButton extends StatelessWidget {
       child: text
           .plain()
           .color(outline! ? AppColors.neutral.dark : Colors.white)
-          .fSize(12)
+          .fSize(14)
           .weight(FontWeight.w700)
           .b()
-          .pad(8, 30),
+          .pad(12.h, 30.w),
     ).inkTap(
       onTap: press,
       borderRadius: BorderRadius.circular(5.r),

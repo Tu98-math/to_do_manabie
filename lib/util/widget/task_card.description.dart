@@ -33,7 +33,7 @@ class Description extends StatelessWidget {
             .color(AppColors.neutral.grey)
             .b()
       ],
-    ).pad(13, 0);
+    ).pad(13.h, 0);
   }
 
   String toTimeString(DateTime date) {

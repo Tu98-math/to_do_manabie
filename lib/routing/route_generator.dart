@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:to_do_manabie/page/home/home_page.dart';
+import '/page/home/home_page.dart';
 
 import '/page/welcome/welcome_page.dart';
 import 'app_routes.dart';

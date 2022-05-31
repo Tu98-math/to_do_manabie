@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:to_do_manabie/repository/task_repository.dart';
-
 import '/base/base_view_model.dart';
-import '../../model/task_model.dart';
+import '/model/task_model.dart';
 
 class HomeViewModel extends BaseViewModel {
   BehaviorSubject<List<TaskModel>?> bsTask =
@@ -24,12 +22,10 @@ class HomeViewModel extends BaseViewModel {
   }
 
   init() async {
-    await getTask.initDatabase();
+    await taskRes.initDatabase();
     bsLoading.add(false);
-    if (TaskRepository.taskDao != null) {
-      streamTask = getTask.getAllTask().listen((event) {
-        bsTask.add(event);
-      });
-    }
+    streamTask = taskRes.getAllTask().listen((event) {
+      bsTask.add(event);
+    });
   }
 }

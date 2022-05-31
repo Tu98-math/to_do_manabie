@@ -31,9 +31,7 @@ class HomePage extends StatefulWidget {
 
 class HomeState extends BaseState<HomePage, HomeViewModel> {
   final PageController tabController = PageController();
-  int currentTab = 0;
-
-  int countComplete = 0, countIncomplete = 0;
+  int currentTab = 0, countTask = 0;
 
   late StreamSubscription<List<TaskModel>?> streamTask;
 
@@ -43,47 +41,35 @@ class HomeState extends BaseState<HomePage, HomeViewModel> {
 
   @override
   void initState() {
-    tab = [
-      AllTab.instance(),
-      CompleteTab.instance(() => tabClick(2)),
-      IncompleteTab.instance(),
-    ];
-
-    // streamLoading = getVm().bsLoading.listen((value) {
-    //   if (!value) {
-    //     tab = [
-    //       AllTab.instance(),
-    //       CompleteTab.instance(() => tabClick(2)),
-    //       IncompleteTab.instance(),
-    //     ];
-    //   } else {
-    //     tab = [];
-    //   }
-    //   setState(() {});
-    // });
+    streamLoading = getVm().bsLoading.listen((value) {
+      if (!value) {
+        tab = [
+          AllTab.instance(),
+          CompleteTab.instance(() => tabClick(2)),
+          IncompleteTab.instance(),
+        ];
+      } else {
+        tab = [];
+      }
+      setState(() {});
+    });
 
     streamTask = getVm().bsTask.listen((value) {
-      countComplete = 0;
-      countIncomplete = 0;
-      for (int i = 0; i < (value ?? []).length; i++) {
-        if (value![i].completed ?? true) {
-          countComplete++;
+      if (value != null) {
+        countTask = value.length;
+        if (value.isEmpty) {
+          tab = [
+            AllTab.instance(),
+          ];
         } else {
-          countIncomplete++;
+          tab = [
+            AllTab.instance(),
+            CompleteTab.instance(() => tabClick(2)),
+            IncompleteTab.instance(),
+          ];
         }
+        setState(() {});
       }
-      // if (countComplete + countIncomplete == 0) {
-      //   tab = [
-      //     AllTab.instance(),
-      //   ];
-      // } else {
-      //   tab = [
-      //     AllTab.instance(),
-      //     CompleteTab.instance(() => tabClick(2)),
-      //     IncompleteTab.instance(),
-      //   ];
-      // }
-      setState(() {});
     });
     super.initState();
   }
@@ -119,7 +105,7 @@ class HomeState extends BaseState<HomePage, HomeViewModel> {
     return Scaffold(
       body: buildBody(),
       backgroundColor: Colors.white,
-      bottomNavigationBar: (countIncomplete + countComplete) > 0
+      bottomNavigationBar: countTask > 0
           ? buildBottomNavigationBar(
               currentIndex: currentTab,
               press: tabClick,
@@ -187,7 +173,7 @@ class HomeState extends BaseState<HomePage, HomeViewModel> {
                 : AppColors.primary.blue,
             size: 18.h,
           ),
-          SizedBox(height: 4.w),
+          SizedBox(height: 4.h),
           title
               .plain()
               .color(
@@ -195,10 +181,10 @@ class HomeState extends BaseState<HomePage, HomeViewModel> {
                     ? AppColors.neutral.grey
                     : AppColors.primary.blue,
               )
-              .fSize(16)
+              .fSize(12)
               .b(),
         ],
-      ).pad(4),
+      ).pad(4.h),
       label: title,
     );
   }
