@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '/gen/app_colors.dart';
 import '/model/task_model.dart';
 import '/util/extension/extension.dart';
+import '/util/validator/task_field_validator.dart';
 import '/util/widget/action_button.dart';
 
 Future<void> showAddTaskDialog(
@@ -20,7 +21,7 @@ Future<void> showAddTaskDialog(
           if (_formKey.currentState!.validate()) {
             await addTask(
               TaskModel(
-                des: controller.text,
+                des: controller.text.trim(),
                 completed: false,
                 time: DateTime.now().millisecondsSinceEpoch,
               ),
@@ -60,8 +61,7 @@ Future<void> showAddTaskDialog(
                       border: InputBorder.none,
                       hintText: "Enter your task",
                     ),
-                    validator: (val) =>
-                        val!.isNotEmpty ? null : "Please enter your task",
+                    validator: TaskFieldValidator.validate,
                     controller: controller,
                   ),
                 ],

@@ -11,11 +11,14 @@ abstract class TaskDao {
   Stream<List<TaskModel>?> getAllCompletedTask(bool completed);
 
   @insert
-  Future<void> insertTask(TaskModel task);
+  Future<int> insertTask(TaskModel task);
 
   @update
   Future<void> updateTask(TaskModel task);
 
   @delete
   Future<void> deleteTask(TaskModel task);
+
+  @Query('DELETE FROM TaskModel')
+  Future<void> deleteTable();
 }

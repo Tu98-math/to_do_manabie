@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:restart_app/restart_app.dart';
 
 import '/base/base_state.dart';
+import '/gen/app_colors.dart';
 import '/gen/assets.gen.dart';
 import '/model/task_model.dart';
 import '/util/dialog/add_task_dialog.dart';
@@ -62,7 +63,8 @@ class IncompleteState extends BaseState<IncompleteTab, IncompleteViewModel> {
   Widget buildBody() {
     return Scaffold(
       appBar: countIncomplete > 0 ? buildAppBar() : null,
-      backgroundColor: countIncomplete > 0 ? Colors.white : Color(0xFFE7EFFC),
+      backgroundColor:
+          countIncomplete > 0 ? Colors.white : AppColors.background,
       body: SizedBox(
         width: screenWidth,
         height: screenHeight,

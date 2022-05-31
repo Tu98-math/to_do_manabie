@@ -178,8 +178,14 @@ class _$TaskDao extends TaskDao {
   }
 
   @override
-  Future<void> insertTask(TaskModel task) async {
-    await _taskModelInsertionAdapter.insert(task, OnConflictStrategy.abort);
+  Future<void> deleteTable() async {
+    await _queryAdapter.queryNoReturn('DELETE FROM TaskModel');
+  }
+
+  @override
+  Future<int> insertTask(TaskModel task) {
+    return _taskModelInsertionAdapter.insertAndReturnId(
+        task, OnConflictStrategy.abort);
   }
 
   @override

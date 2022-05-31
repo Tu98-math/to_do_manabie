@@ -5,7 +5,7 @@ class AppColors {
 
   static const $AssetsNeutralColor neutral = $AssetsNeutralColor();
 
-  static const Color background = Color(0xFFFFFFFF);
+  static const Color background = Color(0xFFE7EFFC);
 }
 
 class $AssetsPrimaryColor {

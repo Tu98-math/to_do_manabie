@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
@@ -31,7 +31,7 @@ abstract class BaseViewModel {
       msg: text,
       timeInSecForIosWeb: 1,
       backgroundColor: AppColors.neutral.dark,
-      textColor: AppColors.background,
+      textColor: Colors.white,
     );
   }
 
