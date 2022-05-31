@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../provider/task_provider.dart';
 import '/gen/app_colors.dart';
 import '/repository/task_repository.dart';
 
@@ -12,11 +13,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 abstract class BaseViewModel {
   BehaviorSubject<bool> bsRunning = BehaviorSubject.seeded(false);
 
-  final AutoDisposeStateProviderRef ref;
+  final AutoDisposeProviderReference ref;
 
-  TaskRepository getTask = TaskRepository();
+  late final TaskRepository getTask;
 
-  BaseViewModel(this.ref);
+  BaseViewModel(this.ref) {
+    getTask = ref.watch(taskDaoRepositoryProvider);
+  }
 
   @mustCallSuper
   void dispose() {

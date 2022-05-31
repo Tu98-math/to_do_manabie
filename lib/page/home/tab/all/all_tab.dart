@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:restart_app/restart_app.dart';
+import '/gen/assets.gen.dart';
+import '/util/dialog/add_task_dialog.dart';
+
+import '/util/widget/default_tab.dart';
+import '/util/widget/wrong_tab.dart';
 
 import '/base/base_state.dart';
 import '/gen/app_colors.dart';
@@ -11,7 +17,7 @@ import 'all_provider.dart';
 import 'all_vm.dart';
 
 class AllTab extends StatefulWidget {
-  final WidgetRef watch;
+  final ScopedReader watch;
 
   static Widget instance() {
     return Consumer(builder: (context, watch, _) {
@@ -28,8 +34,22 @@ class AllTab extends StatefulWidget {
 }
 
 class AllState extends BaseState<AllTab, AllViewModel> {
+  int countComplete = 0, countIncomplete = 0;
+
   @override
   void initState() {
+    getVm().bsTask.listen((value) {
+      countComplete = 0;
+      countIncomplete = 0;
+      for (int i = 0; i < (value ?? []).length; i++) {
+        if (value![i].completed ?? true) {
+          countComplete++;
+        } else {
+          countIncomplete++;
+        }
+      }
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -38,9 +58,12 @@ class AllState extends BaseState<AllTab, AllViewModel> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: buildBody(),
-      floatingActionButton: AddTaskButton(
-        onTap: getVm().addTask,
-      ),
+      floatingActionButton: (countComplete + countIncomplete) > 0
+          ? AddTaskButton(
+              onTap: () async =>
+                  await showAddTaskDialog(context, getVm().addTask),
+            )
+          : null,
     );
   }
 
@@ -54,6 +77,12 @@ class AllState extends BaseState<AllTab, AllViewModel> {
           children: [
             SizedBox(height: 60.w),
             buildDate().pad(0, 16),
+            SizedBox(height: 8.w),
+            buildStatistic(
+              countIncomplete,
+              countComplete,
+            ).pad(0, 16),
+            line,
             buildListTask(),
           ],
         ),
@@ -82,50 +111,58 @@ class AllState extends BaseState<AllTab, AllViewModel> {
     );
   }
 
-  Widget line() => Container(
-        height: 1.w,
-        color: AppColors.neutral.light,
-      ).pad(16, 16);
+  Widget line = Container(
+    height: 1.w,
+    color: AppColors.neutral.light,
+  ).pad(16, 16);
 
-  Widget buildListTask() => StreamBuilder<List<TaskModel>?>(
-        stream: getVm().bsTask,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Text("Some thing went Wrong");
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text("Loading");
-          }
-
-          List<TaskModel> data = snapshot.data!;
-          int lengthCompleted = 0;
-          for (int i = 0; i < data.length; i++) {
-            if (data[i].completed ?? true) {
-              lengthCompleted++;
+  Widget buildListTask() => SizedBox(
+        width: screenWidth,
+        child: StreamBuilder<List<TaskModel>?>(
+          stream: getVm().bsTask,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return WrongTab(
+                image: Assets.images.wrong,
+                title: "Oh no!",
+                des: "Something went wrong, Please try again.",
+                onTap: () async => await Restart.restartApp(),
+                buttonText: "Try Again",
+              );
             }
-          }
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 8.w),
-              buildStatistic(
-                data.length - lengthCompleted,
-                lengthCompleted,
-              ).pad(0, 16),
-              line(),
-              for (int i = 0; i < data.length; i++)
-                TaskCard(
-                  data[i],
-                  updateTask: getVm().updateTask,
-                  removeTask: getVm().removeTask,
-                )
-            ],
-          );
-        },
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const DefaultTab();
+            }
+
+            List<TaskModel> data = snapshot.data!;
+
+            if (data.isEmpty) {
+              return WrongTab(
+                image: Assets.images.noneTask,
+                title: "No tasks!",
+                buttonText: "Create",
+                des: "Tap the button below to create your new task!",
+                onTap: () async =>
+                    await showAddTaskDialog(context, getVm().addTask),
+              );
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (int i = 0; i < data.length; i++)
+                  TaskCard(
+                    data[i],
+                    updateTask: getVm().updateTask,
+                    removeTask: getVm().removeTask,
+                  )
+              ],
+            );
+          },
+        ),
       );
 
   @override
-  AllViewModel getVm() => widget.watch.watch(viewModelProvider);
+  AllViewModel getVm() => widget.watch(viewModelProvider).state;
 }

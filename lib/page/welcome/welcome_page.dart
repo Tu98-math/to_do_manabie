@@ -8,7 +8,7 @@ import 'welcome_provider.dart';
 import 'welcome_vm.dart';
 
 class WelcomePage extends StatefulWidget {
-  final WidgetRef watch;
+  final ScopedReader watch;
 
   static Widget instance() {
     return Consumer(builder: (context, watch, _) {
@@ -52,5 +52,5 @@ class WelcomeState extends BaseState<WelcomePage, WelcomeViewModel> {
   }
 
   @override
-  WelcomeViewModel getVm() => widget.watch.watch(viewModelProvider);
+  WelcomeViewModel getVm() => widget.watch(viewModelProvider).state;
 }

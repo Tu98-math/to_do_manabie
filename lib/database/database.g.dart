@@ -82,7 +82,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `TaskModel` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `des` TEXT, `completed` INTEGER, `time` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `TaskModel` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `des` TEXT, `completed` INTEGER, `time` INTEGER)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -148,15 +148,31 @@ class _$TaskDao extends TaskDao {
   final DeletionAdapter<TaskModel> _taskModelDeletionAdapter;
 
   @override
-  Stream<List<TaskModel>> getAllTask() {
+  Stream<List<TaskModel>?> getAllTask() {
     return _queryAdapter.queryListStream('SELECT * FROM TaskModel',
         mapper: (Map<String, Object?> row) => TaskModel(
-            id: row['id'] as int,
+            id: row['id'] as int?,
             des: row['des'] as String?,
             completed: row['completed'] == null
                 ? null
                 : (row['completed'] as int) != 0,
             time: row['time'] as int?),
+        queryableName: 'TaskModel',
+        isView: false);
+  }
+
+  @override
+  Stream<List<TaskModel>?> getAllCompletedTask(bool completed) {
+    return _queryAdapter.queryListStream(
+        'SELECT * FROM TaskModel WHERE completed = ?1',
+        mapper: (Map<String, Object?> row) => TaskModel(
+            id: row['id'] as int?,
+            des: row['des'] as String?,
+            completed: row['completed'] == null
+                ? null
+                : (row['completed'] as int) != 0,
+            time: row['time'] as int?),
+        arguments: [completed ? 1 : 0],
         queryableName: 'TaskModel',
         isView: false);
   }

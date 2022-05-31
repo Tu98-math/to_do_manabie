@@ -10,7 +10,6 @@ class AllViewModel extends BaseViewModel {
   }
 
   init() async {
-    await getTask.initDatabase();
     getTask.getAllTask().listen((event) {
       bsTask.add(event);
     });

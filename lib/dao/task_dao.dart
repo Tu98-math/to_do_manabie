@@ -4,7 +4,10 @@ import 'package:to_do_manabie/model/task_model.dart';
 @dao
 abstract class TaskDao {
   @Query('SELECT * FROM TaskModel')
-  Stream<List<TaskModel>> getAllTask();
+  Stream<List<TaskModel>?> getAllTask();
+
+  @Query('SELECT * FROM TaskModel WHERE completed = :completed')
+  Stream<List<TaskModel>?> getAllCompletedTask(bool completed);
 
   @insert
   Future<void> insertTask(TaskModel task);

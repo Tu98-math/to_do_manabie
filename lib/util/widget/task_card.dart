@@ -119,7 +119,6 @@ class TaskCard extends StatelessWidget {
       press: () async {
         Get.back();
         controller.activeState!.dismiss();
-        await Future.delayed(const Duration(milliseconds: 500));
         removeTask(task);
       },
       outline: false,
@@ -142,7 +141,8 @@ class TaskCard extends StatelessWidget {
                 style: TextStyle(color: AppColors.primary.red),
               ),
               const TextSpan(
-                  text: ' and you will no longer be able to access them.')
+                text: ' and you will no longer be able to access them.',
+              )
             ]),
       ),
       actionsPadding: EdgeInsets.only(bottom: 12.w, right: 12.w),
@@ -188,10 +188,11 @@ class TaskCard extends StatelessWidget {
             if (_formKey.currentState!.validate()) {
               await updateTask(
                 TaskModel(
-                    id: task.id,
-                    des: taskController.text,
-                    completed: false,
-                    time: DateTime.now().millisecondsSinceEpoch),
+                  id: task.id,
+                  des: taskController.text,
+                  completed: false,
+                  time: DateTime.now().millisecondsSinceEpoch,
+                ),
               );
               Get.back();
               controller.activeState!.close();

@@ -16,7 +16,6 @@ class RouteGenerator {
   }
 
   Route<dynamic> onGenerateRoute(RouteSettings setting) {
-    final uri = Uri.parse(setting.name!);
     GetPageRoute page({required Widget child}) {
       return GetPageRoute(
           settings: setting, page: () => child, transition: Transition.fadeIn);

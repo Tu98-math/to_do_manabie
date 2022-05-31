@@ -19,8 +19,23 @@ class $AssetsFontGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/all_done.png
+  AssetGenImage get allDone =>
+      const AssetGenImage('assets/images/all_done.png');
+
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+
+  /// File path: assets/images/none_done.png
+  AssetGenImage get noneDone =>
+      const AssetGenImage('assets/images/none_done.png');
+
+  /// File path: assets/images/none_task.png
+  AssetGenImage get noneTask =>
+      const AssetGenImage('assets/images/none_task.png');
+
+  /// File path: assets/images/wrong.png
+  AssetGenImage get wrong => const AssetGenImage('assets/images/wrong.png');
 }
 
 class Assets {

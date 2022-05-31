@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_manabie/model/task_model.dart';
 
 import '/base/base_state.dart';
 import '/gen/app_colors.dart';
@@ -10,7 +11,7 @@ import 'tab/incomplete/incomplete_tab.dart';
 import '/util/extension/extension.dart';
 
 class HomePage extends StatefulWidget {
-  final WidgetRef watch;
+  final ScopedReader watch;
 
   static Widget instance() {
     return Consumer(builder: (context, watch, _) {
@@ -27,14 +28,51 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeState extends BaseState<HomePage, HomeViewModel> {
-  PageController tabController = PageController();
+  final PageController tabController = PageController();
   int currentTab = 0;
 
-  List<Widget> tab = [
-    AllTab.instance(),
-    CompleteTab.instance(),
-    IncompleteTab.instance()
-  ];
+  List<Widget> tab = [];
+
+  int countComplete = 0, countIncomplete = 0;
+
+  @override
+  void initState() {
+    getVm().bsLoading.listen((value) {
+      if (!value) {
+        tab = [
+          AllTab.instance(),
+          CompleteTab.instance(() => tabClick(2)),
+          IncompleteTab.instance(),
+        ];
+        setState(() {});
+      }
+    });
+
+    getVm().bsTask.listen((value) {
+      countComplete = 0;
+      countIncomplete = 0;
+      for (int i = 0; i < (value ?? []).length; i++) {
+        if (value![i].completed ?? true) {
+          countComplete++;
+        } else {
+          countIncomplete++;
+        }
+      }
+      if (countComplete + countIncomplete == 0) {
+        tab = [
+          AllTab.instance(),
+        ];
+      } else {
+        tab = [
+          AllTab.instance(),
+          CompleteTab.instance(() => tabClick(2)),
+          IncompleteTab.instance(),
+        ];
+      }
+      setState(() {});
+    });
+    super.initState();
+  }
 
   void goTab(int index) {
     setState(() {
@@ -59,10 +97,13 @@ class HomeState extends BaseState<HomePage, HomeViewModel> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: buildBody(),
-      bottomNavigationBar: buildBottomNavigationBar(
-        currentIndex: currentTab,
-        press: tabClick,
-      ),
+      backgroundColor: Colors.white,
+      bottomNavigationBar: (countIncomplete + countComplete) > 0
+          ? buildBottomNavigationBar(
+              currentIndex: currentTab,
+              press: tabClick,
+            )
+          : null,
     );
   }
 
@@ -89,7 +130,7 @@ class HomeState extends BaseState<HomePage, HomeViewModel> {
       type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
       backgroundColor: Colors.white,
-      items: [
+      items: <BottomNavigationBarItem>[
         buildBottomNavigationBarItem(
           title: 'All',
           icon: Icons.list_alt,
@@ -141,5 +182,5 @@ class HomeState extends BaseState<HomePage, HomeViewModel> {
   }
 
   @override
-  HomeViewModel getVm() => widget.watch.watch(viewModelProvider);
+  HomeViewModel getVm() => widget.watch(viewModelProvider).state;
 }

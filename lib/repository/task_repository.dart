@@ -10,10 +10,15 @@ class TaskRepository {
     final database =
         await $FloorAppDatabase.databaseBuilder('app_database.db').build();
     taskDao = database.taskDao;
+    print("init successful");
   }
 
-  Stream<List<TaskModel>> getAllTask() {
+  Stream<List<TaskModel>?> getAllTask() {
     return taskDao!.getAllTask();
+  }
+
+  Stream<List<TaskModel>?> getAllCompletedTask(bool completed) {
+    return taskDao!.getAllCompletedTask(completed);
   }
 
   Future<void> removeTask(TaskModel task) async {
