@@ -158,17 +158,13 @@ main() {
     expect(taskRes.getAllTask(), emitsInOrder([[]]));
   });
 
-  test("empty-0 return getAllTask ", () {
+  test("empty-0 return getAllTask Test", () {
     // check
+    expect(taskRes.getAllCompletedTask(true), emitsInOrder([[]]));
     expect(taskRes.getAllCompletedTask(true), emitsInOrder([[]]));
   });
 
-  test("empty-1 return getAllCompletedTask ", () {
-    // check
-    expect(taskRes.getAllCompletedTask(true), emitsInOrder([[]]));
-  });
-
-  test("empty-2 return getAllCompletedTask ", () async {
+  test("return getAllCompletedTask Test", () async {
     // add task completed = false
     testTask = TaskModel(
       des: testTask.des,
@@ -187,10 +183,6 @@ main() {
 
     // check
     expect(taskRes.getAllCompletedTask(true), emitsInOrder([[]]));
-  });
-
-  test("none-empty return getAllCompletedTask ", () {
-    // check
     expect(
         taskRes.getAllCompletedTask(false),
         emitsInOrder([
