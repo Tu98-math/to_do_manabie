@@ -12,5 +12,9 @@ class TaskModel extends Equatable {
   const TaskModel({this.id, this.des, this.completed, this.time});
 
   @override
+  String toString() =>
+      "TaskModel(id: $id, des:$des, completed: $completed, time:${DateTime.fromMillisecondsSinceEpoch(time ?? 0)})";
+
+  @override
   List<Object?> get props => [id];
 }

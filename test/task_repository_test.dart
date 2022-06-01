@@ -2,34 +2,30 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:to_do_manabie/model/task_model.dart';
 import 'package:to_do_manabie/repository/task_repository.dart';
 
-main() async {
+main() {
   TaskRepository taskRes = TaskRepository();
 
-  List<TaskModel>? tasks = [];
-
   TaskModel testTask = TaskModel(
-    des: "Hihi",
+    des: "Test",
     completed: false,
     time: DateTime.now().millisecondsSinceEpoch,
   );
 
-  test("insert Task Test", () async {
+  TaskModel insertTestTask = TaskModel(
+    des: "insertTask test",
+    completed: false,
+    time: DateTime.now().millisecondsSinceEpoch,
+  );
+
+  test("empty return getAllTask", () async {
     await taskRes.initDatabase();
     await taskRes.taskDao.deleteTable();
 
-    // stream getAllTask to tasks
-    taskRes.getAllTask().listen((event) {
-      tasks = event;
-    });
-
-    // await stream builder listen test
-    await Future.delayed(const Duration(milliseconds: 100));
-
     // check
-    expect((tasks ?? []).length, 0);
+    expect(taskRes.getAllTask(), emitsInOrder([]));
   });
 
-  test("insert Task Test", () async {
+  test("none-empty returns getAllTask", () async {
     // save id Task Model
     var result = await taskRes.taskDao.insertTask(testTask);
 
@@ -41,64 +37,124 @@ main() async {
       time: testTask.time,
     );
 
-    // await stream builder listen test
-    await Future.delayed(const Duration(milliseconds: 100));
-
     // check
-    expect((tasks ?? []).length, 1);
+    expect(
+        taskRes.getAllTask(),
+        emitsInOrder([
+          [testTask]
+        ]));
   });
 
-  test("remove Task Test", () async {
-    // delete task
-    await taskRes.taskDao.deleteTask(testTask);
-
-    // await stream builder listen test
-    await Future.delayed(const Duration(milliseconds: 100));
-
-    // check
-    expect((tasks ?? []).length, 0);
-  });
-
-  test("get All Task Test", () async {
-    // clear id Task
-    testTask = TaskModel(
-      des: "Hihi",
+  test("none insertTask Test", () async {
+    // setup
+    TaskModel insertTestTask = TaskModel(
+      des: "insertTask test",
       completed: false,
       time: DateTime.now().millisecondsSinceEpoch,
     );
 
-    // add 10 task model
-    for (int i = 0; i < 10; i++) {
-      await taskRes.taskDao.insertTask(testTask);
-    }
-
-    // await stream builder listen
-    await Future.delayed(const Duration(milliseconds: 100));
+    // none run
 
     // check
-    expect((tasks ?? []).length, 10);
+    expect(
+        taskRes.getAllTask(),
+        emitsInOrder([
+          [testTask]
+        ]));
   });
 
-  test("get All Task by Completed Test", () async {
-    // add 10 task model
-    for (int i = 0; i < 5; i++) {
-      testTask = TaskModel(
-        des: "Hihi",
-        completed: true,
-        time: DateTime.now().millisecondsSinceEpoch,
-      );
-      await taskRes.taskDao.insertTask(testTask);
-    }
+  test("insertTask Test", () async {
+    // setup
 
-    List<TaskModel>? tasksComplete = [];
-    taskRes.getAllCompletedTask(true).listen((event) {
-      tasksComplete = event;
-    });
+    // save id Task Model
+    var result = await taskRes.taskDao.insertTask(insertTestTask);
 
-    // await stream builder listen
-    await Future.delayed(const Duration(milliseconds: 100));
+    // add id to Task Model
+    insertTestTask = TaskModel(
+      id: result,
+      des: insertTestTask.des,
+      completed: insertTestTask.completed,
+      time: insertTestTask.time,
+    );
 
     // check
-    expect(5, (tasksComplete ?? []).length);
+    expect(
+        taskRes.getAllTask(),
+        emitsInOrder([
+          [testTask, insertTestTask]
+        ]));
+  });
+
+  test("updateTask completed Test", () async {
+    // setup completed = !completed
+    testTask = TaskModel(
+      id: testTask.id,
+      des: testTask.des,
+      completed: !testTask.completed!,
+      time: DateTime.now().millisecondsSinceEpoch,
+    );
+
+    // update testTask
+    await taskRes.taskDao.updateTask(testTask);
+
+    // check
+    expect(
+        taskRes.getAllTask(),
+        emitsInOrder([
+          [testTask, insertTestTask]
+        ]));
+  });
+
+  test("updateTask description Test", () async {
+    // setup des += 'er'
+    testTask = TaskModel(
+      id: testTask.id,
+      des: testTask.des! + 'er',
+      completed: !testTask.completed!,
+      time: DateTime.now().millisecondsSinceEpoch,
+    );
+
+    // update testTask
+    await taskRes.taskDao.updateTask(testTask);
+
+    // check
+    expect(
+        taskRes.getAllTask(),
+        emitsInOrder([
+          [testTask, insertTestTask]
+        ]));
+  });
+
+  test("deleteTask-0 Test", () async {
+    // remove testTask
+    await taskRes.taskDao.deleteTask(testTask);
+
+    // check
+    expect(
+        taskRes.getAllTask(),
+        emitsInOrder([
+          [insertTestTask]
+        ]));
+  });
+
+  test("deleteTask-1 Test", () async {
+    // testTask deleted
+    // delete again testTask
+    await taskRes.taskDao.deleteTask(testTask);
+
+    // check
+    expect(
+        taskRes.getAllTask(),
+        emitsInOrder([
+          [insertTestTask]
+        ]));
+  });
+
+  test("deleteTask-2 Test", () async {
+    // delete insertTestTask
+    await taskRes.taskDao.deleteTask(insertTestTask);
+
+    // check
+    expect(taskRes.getAllTask(), emitsInOrder([]));
   });
 }
