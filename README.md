@@ -1,6 +1,6 @@
 # This is a recruitment test of Manabie.
 
-![Alt text](https://github.com/Tu98-math/to_do_manabie/blob/main/logo_manabie.png)
+![Manabie logo](https://github.com/Tu98-math/to_do_manabie/blob/main/logo_manabie.png)
 
 ## Requirement:
 
@@ -47,3 +47,5 @@ Writing a TODO application include 3 screens:
 
 
 ## To Do App Final UI
+
+![Screen](https://github.com/Tu98-math/to_do_manabie/blob/main/screen.png)
