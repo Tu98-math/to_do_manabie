@@ -25,5 +25,19 @@ Writing a TODO application include 3 screens:
 - [x] You can use any architecture you want, but the architecture must describe 3 layers: Presentation layer, Domain (Business) layer and Data Access layer. (**MVVM**)
 - [x] Providing a concise and instructional README on how to run the code and unit test cases.
 - [x] Use appropriate data structures.
-- [x] The assignment can be implemented with either **Dart (Flutter)** or a
-native iOS/Android language.
+- [x] The assignment can be implemented with either **Dart (Flutter)** or a native iOS/Android language.
+
+## Run:
+
+- Flutter SDK version: **2.10.5**
+- Platform: Android & iOS
+- Run unit test:
+  - Task validate   : $ flutter test test\task_validate_test.dart
+  - Task repository : $ flutter test test\task_repository_test.dart
+- Run my app: 
+  - Clone git:         $ git clone https://github.com/Tu98-math/to_do_manabie.git
+  - Go to project:     $ cd to_do_manabie 
+  - Get dependencies : $ flutter pub get
+  - Connect device and run app
+
+## To Do App Final UI
