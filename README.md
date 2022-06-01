@@ -31,11 +31,6 @@ Writing a TODO application include 3 screens:
 
 - Flutter SDK version: **2.10.5**
 - Platform: Android & iOS
-- Run unit test:
-  - Task validate: 
-    $ flutter test test\task_validate_test.dart
-  - Task repository: 
-    $ flutter test test\task_repository_test.dart
 - Run my app: 
   - Clone git:         
     $ git clone https://github.com/Tu98-math/to_do_manabie.git
@@ -44,5 +39,11 @@ Writing a TODO application include 3 screens:
   - Get dependencies: 
     $ flutter pub get
   - Connect device and run app
+- Run unit test:
+  - Task validate: 
+    $ flutter test test\task_validate_test.dart
+  - Task repository: 
+    $ flutter test test\task_repository_test.dart
+
 
 ## To Do App Final UI
