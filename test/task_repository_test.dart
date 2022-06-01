@@ -155,6 +155,46 @@ main() {
     await taskRes.taskDao.deleteTask(insertTestTask);
 
     // check
-    expect(taskRes.getAllTask(), emitsInOrder([]));
+    expect(taskRes.getAllTask(), emitsInOrder([[]]));
+  });
+
+  test("empty-0 return getAllTask ", () {
+    // check
+    expect(taskRes.getAllCompletedTask(true), emitsInOrder([[]]));
+  });
+
+  test("empty-1 return getAllCompletedTask ", () {
+    // check
+    expect(taskRes.getAllCompletedTask(true), emitsInOrder([[]]));
+  });
+
+  test("empty-2 return getAllCompletedTask ", () async {
+    // add task completed = false
+    testTask = TaskModel(
+      des: testTask.des,
+      completed: false,
+      time: DateTime.now().millisecondsSinceEpoch,
+    );
+
+    var result = await taskRes.taskDao.insertTask(testTask);
+
+    testTask = TaskModel(
+      id: result,
+      des: testTask.des,
+      completed: testTask.completed,
+      time: DateTime.now().millisecondsSinceEpoch,
+    );
+
+    // check
+    expect(taskRes.getAllCompletedTask(true), emitsInOrder([[]]));
+  });
+
+  test("none-empty return getAllCompletedTask ", () {
+    // check
+    expect(
+        taskRes.getAllCompletedTask(false),
+        emitsInOrder([
+          [testTask]
+        ]));
   });
 }
