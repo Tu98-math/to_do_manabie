@@ -22,7 +22,7 @@ main() {
     await taskRes.taskDao.deleteTable();
 
     // check
-    expect(taskRes.getAllTask(), emitsInOrder([]));
+    expect(taskRes.getAllTask(), emitsInOrder([[]]));
   });
 
   test("none-empty returns getAllTask", () async {
