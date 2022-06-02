@@ -1,6 +1,6 @@
 # This is a recruitment test of Manabie.
 
-![Alt text](https://static.ybox.vn/2019/7/2/1563879696897-manabie-international-pte-ltd-logo%20(1).png)
+![Manabie logo](https://github.com/Tu98-math/to_do_manabie/blob/main/logo_manabie.png)
 
 ## Requirement:
 
@@ -31,13 +31,21 @@ Writing a TODO application include 3 screens:
 
 - Flutter SDK version: **2.10.5**
 - Platform: Android & iOS
-- Run unit test:
-  - Task validate   : $ flutter test test\task_validate_test.dart
-  - Task repository : $ flutter test test\task_repository_test.dart
 - Run my app: 
-  - Clone git:         $ git clone https://github.com/Tu98-math/to_do_manabie.git
-  - Go to project:     $ cd to_do_manabie 
-  - Get dependencies : $ flutter pub get
+  - Clone git:         
+    $ git clone https://github.com/Tu98-math/to_do_manabie.git
+  - Go to project:     
+    $ cd to_do_manabie 
+  - Get dependencies: 
+    $ flutter pub get
   - Connect device and run app
+- Run unit test:
+  - Task validate: 
+    $ flutter test test\task_validate_test.dart
+  - Task repository: 
+    $ flutter test test\task_repository_test.dart
+
 
 ## To Do App Final UI
+
+![Screen](https://github.com/Tu98-math/to_do_manabie/blob/main/screen.png)
